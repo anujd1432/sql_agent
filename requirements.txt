@@ -2,3 +2,8 @@ pydantic
 streamlit
 langgraph
 psycopg
+streamlit
+pandas
+python-dotenv
+langchain-core
+langchain-groq
