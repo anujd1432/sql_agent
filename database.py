@@ -38,6 +38,39 @@ def get_db_schema():
     1. streamlit ui
     2. llm
     """
+    query = """
+        SELECT
+            table_name,
+            column_name,
+            data_type
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+        ORDER BY table_name, ordinal_position;
+    """
+
+    try:
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+                schema = {}
+
+                for table_name, column_name, data_type in rows:
+                    if table_name not in schema:
+                        schema[table_name] = []
+
+                    schema[table_name].append({
+                        "column": column_name,
+                        "type": data_type
+                    })
+
+                return schema
+
+    except Exception as error:
+        raise ConnectionError(
+            f"Unable to fetch database schema: {error}"
+        )
     
 def seed_database():
     sql_statements = [
