@@ -7,3 +7,4 @@ pandas
 python-dotenv
 langchain-core
 langchain-groq
+psycopg[binary]
